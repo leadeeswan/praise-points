@@ -1,0 +1,16 @@
+**/.git
+**/.gitignore
+**/README.md
+**/LICENSE
+**/Dockerfile*
+**/docker-compose*
+**/.dockerignore
+**/node_modules
+**/npm-debug.log
+**/coverage
+**/.nyc_output
+**/build
+**/.gradle
+**/target
+**/*.jar
+**/*.war
