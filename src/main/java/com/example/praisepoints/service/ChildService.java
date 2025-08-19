@@ -40,6 +40,8 @@ public class ChildService {
         child.setName(request.getName());
         child.setBirthDate(request.getBirthDate());
         child.setProfileImage(request.getProfileImage());
+        child.setUsername(request.getUsername());
+        child.setAuthKey(request.getAuthKey());
         child.setTotalPoints(0);
         
         Child savedChild = childRepository.save(child);
@@ -52,6 +54,8 @@ public class ChildService {
         child.setName(request.getName());
         child.setBirthDate(request.getBirthDate());
         child.setProfileImage(request.getProfileImage());
+        child.setUsername(request.getUsername());
+        child.setAuthKey(request.getAuthKey());
         
         Child savedChild = childRepository.save(child);
         return convertToResponse(savedChild);
@@ -73,6 +77,8 @@ public class ChildService {
                 child.getName(),
                 child.getBirthDate(),
                 child.getProfileImage(),
+                child.getUsername(),
+                child.getAuthKey(),
                 child.getTotalPoints(),
                 child.getCreatedAt()
         );

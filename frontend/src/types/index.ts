@@ -11,6 +11,8 @@ export interface Child {
   name: string;
   birthDate: string | null;
   profileImage: string | null;
+  username: string | null;
+  authKey: string | null;
   totalPoints: number;
   createdAt: string;
 }
@@ -31,7 +33,7 @@ export interface Reward {
   requiredPoints: number;
   category: 'TOY' | 'SNACK' | 'EXPERIENCE' | 'MONEY' | 'OTHER';
   imageUrl: string | null;
-  isActive: boolean;
+  active: boolean;
   createdAt: string;
 }
 
@@ -65,6 +67,8 @@ export interface ChildRequest {
   name: string;
   birthDate: string | null;
   profileImage: string | null;
+  username: string | null;
+  authKey: string | null;
 }
 
 export interface PointAwardRequest {
@@ -80,10 +84,64 @@ export interface RewardRequest {
   requiredPoints: number;
   category: 'TOY' | 'SNACK' | 'EXPERIENCE' | 'MONEY' | 'OTHER';
   imageUrl: string | null;
-  isActive: boolean;
+  active: boolean;
 }
 
 export interface PurchaseRequest {
   childId: number;
   rewardId: number;
+}
+
+export interface ChildAuthRequest {
+  username: string;
+  authKey: string;
+}
+
+export interface ChildAuthResponse {
+  token: string;
+  childId: number;
+  name: string;
+  totalPoints: number;
+}
+
+export interface ChildProfileResponse {
+  id: number;
+  name: string;
+  birthDate: string | null;
+  profileImage: string | null;
+  totalPoints: number;
+  reservedPoints: number;
+  availablePoints: number;
+  createdAt: string;
+}
+
+export interface PointTransactionResponse {
+  id: number;
+  transactionType: string;
+  points: number;
+  reason: string | null;
+  message: string | null;
+  createdAt: string;
+}
+
+export interface PurchaseHistoryResponse {
+  id: number;
+  rewardName: string;
+  rewardDescription: string | null;
+  requiredPoints: number;
+  rewardImageUrl: string | null;
+  status: string;
+  requestedAt: string;
+  approvedAt: string | null;
+}
+
+export interface RewardListResponse {
+  id: number;
+  name: string;
+  description: string | null;
+  requiredPoints: number;
+  category: string;
+  imageUrl: string | null;
+  isActive: boolean;
+  createdAt: string;
 }

@@ -33,7 +33,9 @@ const ChildrenManagement: React.FC = () => {
   const [formData, setFormData] = useState<ChildRequest>({
     name: '',
     birthDate: null,
-    profileImage: null
+    profileImage: null,
+    username: null,
+    authKey: null
   });
   const [error, setError] = useState('');
   const [submitting, setSubmitting] = useState(false);
@@ -59,14 +61,18 @@ const ChildrenManagement: React.FC = () => {
       setFormData({
         name: child.name,
         birthDate: child.birthDate,
-        profileImage: child.profileImage
+        profileImage: child.profileImage,
+        username: child.username,
+        authKey: child.authKey
       });
     } else {
       setEditingChild(null);
       setFormData({
         name: '',
         birthDate: null,
-        profileImage: null
+        profileImage: null,
+        username: null,
+        authKey: null
       });
     }
     setDialogOpen(true);
@@ -176,11 +182,22 @@ const ChildrenManagement: React.FC = () => {
                 </Box>
                 
                 <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
-                  <Chip
-                    label={`${child.totalPoints} 포인트`}
-                    color="primary"
-                    variant="outlined"
-                  />
+                  <Box>
+                    <Chip
+                      label={`${child.totalPoints} 포인트`}
+                      color="primary"
+                      variant="outlined"
+                      sx={{ mb: 1 }}
+                    />
+                    {child.username && (
+                      <Chip
+                        label={`ID: ${child.username}`}
+                        color="success"
+                        variant="outlined"
+                        size="small"
+                      />
+                    )}
+                  </Box>
                 </Box>
 
                 <Box display="flex" justifyContent="flex-end">
@@ -259,6 +276,29 @@ const ChildrenManagement: React.FC = () => {
               value={formData.profileImage || ''}
               onChange={handleChange}
               disabled={submitting}
+            />
+            <TextField
+              margin="normal"
+              fullWidth
+              id="username"
+              label="아이 로그인 아이디"
+              name="username"
+              value={formData.username || ''}
+              onChange={handleChange}
+              disabled={submitting}
+              helperText="아이가 로그인할 때 사용할 아이디입니다."
+            />
+            <TextField
+              margin="normal"
+              fullWidth
+              id="authKey"
+              label="아이 로그인 비밀번호"
+              name="authKey"
+              type="password"
+              value={formData.authKey || ''}
+              onChange={handleChange}
+              disabled={submitting}
+              helperText="아이가 로그인할 때 사용할 비밀번호입니다."
             />
           </Box>
         </DialogContent>

@@ -1,6 +1,7 @@
 package com.example.praisepoints.config;
 
 import com.example.praisepoints.security.JwtAuthenticationFilter;
+import com.example.praisepoints.security.ChildJwtAuthenticationFilter;
 import com.example.praisepoints.service.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -31,6 +32,11 @@ public class SecurityConfig {
     }
     
     @Bean
+    public ChildJwtAuthenticationFilter childAuthenticationJwtTokenFilter() {
+        return new ChildJwtAuthenticationFilter();
+    }
+    
+    @Bean
     public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
         authProvider.setUserDetailsService(userDetailsService);
@@ -54,6 +60,8 @@ public class SecurityConfig {
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> 
                 auth.requestMatchers("/api/auth/**").permitAll()
+                    .requestMatchers("/api/child-auth/**").permitAll()
+                    .requestMatchers("/api/child-dashboard/**").authenticated()
                     .requestMatchers("/h2-console/**").permitAll()
                     .requestMatchers("/actuator/health").permitAll()
                     .anyRequest().authenticated()
@@ -61,6 +69,7 @@ public class SecurityConfig {
         
         http.authenticationProvider(authenticationProvider());
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(childAuthenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
         
 //        http.headers(headers -> headers.frameOptions().sameOrigin());
         

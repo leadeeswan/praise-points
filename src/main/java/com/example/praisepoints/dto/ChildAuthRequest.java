@@ -3,18 +3,11 @@ package com.example.praisepoints.dto;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
-import java.time.LocalDate;
-
 @Data
-public class ChildRequest {
+public class ChildAuthRequest {
     @NotBlank
-    private String name;
-    
-    private LocalDate birthDate;
-    
-    private String profileImage;
-    
     private String username;
     
+    @NotBlank
     private String authKey;
 }

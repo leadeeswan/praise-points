@@ -107,6 +107,14 @@ const LoginPage: React.FC = () => {
             >
               {loading ? <CircularProgress size={24} /> : '로그인'}
             </Button>
+            <Button
+              fullWidth
+              variant="outlined"
+              sx={{ mb: 2 }}
+              onClick={() => navigate('/child-login')}
+            >
+              🌟 아이 로그인
+            </Button>
             <Box textAlign="center">
               <Link to="/signup">
                 <Typography variant="body2" color="primary">

@@ -32,6 +32,10 @@ public class RewardService {
         return rewardRepository.findByUserAndIsActiveOrderByCreatedAtDesc(currentUser, true);
     }
     
+    public List<Reward> getActiveRewardsByUser(User user) {
+        return rewardRepository.findByUserAndIsActiveOrderByCreatedAtDesc(user, true);
+    }
+    
     public List<Reward> getRewardsByCategory(Reward.RewardCategory category) {
         User currentUser = getCurrentUser();
         return rewardRepository.findByUserAndCategoryAndIsActiveOrderByCreatedAtDesc(currentUser, category, true);

@@ -117,7 +117,7 @@
 ### 5.1 백엔드
 - **Framework**: Spring Boot 3.x
 - **언어**: Java 17+
-- **데이터베이스**: PostgreSQL
+- **데이터베이스**: MySQL
 - **인증**: Spring Security + JWT
 - **API**: REST API
 

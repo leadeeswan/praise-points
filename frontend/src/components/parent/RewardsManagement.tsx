@@ -43,7 +43,7 @@ const RewardsManagement: React.FC = () => {
     requiredPoints: 1,
     category: 'OTHER',
     imageUrl: '',
-    isActive: true
+    active: true
   });
   const [error, setError] = useState('');
   const [submitting, setSubmitting] = useState(false);
@@ -80,7 +80,7 @@ const RewardsManagement: React.FC = () => {
         requiredPoints: reward.requiredPoints,
         category: reward.category,
         imageUrl: reward.imageUrl || '',
-        isActive: reward.isActive
+        active: reward.active
       });
     } else {
       setEditingReward(null);
@@ -90,7 +90,7 @@ const RewardsManagement: React.FC = () => {
         requiredPoints: 1,
         category: 'OTHER',
         imageUrl: '',
-        isActive: true
+        active: true
       });
     }
     setDialogOpen(true);
@@ -113,7 +113,7 @@ const RewardsManagement: React.FC = () => {
   const handleSwitchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
       ...formData,
-      isActive: e.target.checked
+      active: e.target.checked
     });
   };
 
@@ -211,8 +211,8 @@ const RewardsManagement: React.FC = () => {
                     {reward.name}
                   </Typography>
                   <Chip
-                    label={reward.isActive ? '활성' : '비활성'}
-                    color={reward.isActive ? 'success' : 'default'}
+                    label={reward.active ? '활성' : '비활성'}
+                    color={reward.active ? 'success' : 'default'}
                     size="small"
                   />
                 </Box>
@@ -238,9 +238,9 @@ const RewardsManagement: React.FC = () => {
                   <IconButton
                     size="small"
                     onClick={() => handleToggleStatus(reward.id)}
-                    color={reward.isActive ? 'success' : 'default'}
+                    color={reward.active ? 'success' : 'default'}
                   >
-                    {reward.isActive ? <ToggleOnIcon /> : <ToggleOffIcon />}
+                    {reward.active ? <ToggleOnIcon /> : <ToggleOffIcon />}
                   </IconButton>
                   <IconButton
                     size="small"
@@ -353,7 +353,7 @@ const RewardsManagement: React.FC = () => {
             <FormControlLabel
               control={
                 <Switch
-                  checked={formData.isActive}
+                  checked={formData.active}
                   onChange={handleSwitchChange}
                   disabled={submitting}
                 />

@@ -4,19 +4,18 @@ import lombok.Data;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ChildResponse {
+public class RewardListResponse {
     private Long id;
     private String name;
-    private LocalDate birthDate;
-    private String profileImage;
-    private String username;
-    private String authKey;
-    private int totalPoints;
+    private String description;
+    private int requiredPoints;
+    private String category;
+    private String imageUrl;
+    private boolean isActive;
     private LocalDateTime createdAt;
 }

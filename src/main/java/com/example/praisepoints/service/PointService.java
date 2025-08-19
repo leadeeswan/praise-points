@@ -86,6 +86,12 @@ public class PointService {
         return child.getTotalPoints();
     }
     
+    public List<PointTransaction> getPointHistoryByChildId(Long childId) {
+        Child child = childRepository.findById(childId)
+                .orElseThrow(() -> new RuntimeException("Child not found with id: " + childId));
+        return pointTransactionRepository.findByChildOrderByCreatedAtDesc(child);
+    }
+    
     private Child getChildByIdAndCurrentUser(Long childId) {
         User currentUser = getCurrentUser();
         Child child = childRepository.findById(childId)
