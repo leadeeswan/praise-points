@@ -13,4 +13,5 @@ public interface ChildRepository extends JpaRepository<Child, Long> {
     List<Child> findByUser(User user);
     List<Child> findByUserIdOrderByCreatedAtAsc(Long userId);
     Optional<Child> findByUsername(String username);
+    boolean existsByUsername(String username);
 }

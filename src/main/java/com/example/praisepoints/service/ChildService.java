@@ -4,9 +4,11 @@ import com.example.praisepoints.dto.ChildRequest;
 import com.example.praisepoints.dto.ChildResponse;
 import com.example.praisepoints.entity.Child;
 import com.example.praisepoints.entity.User;
+import com.example.praisepoints.exception.DuplicateUsernameException;
 import com.example.praisepoints.repository.ChildRepository;
 import com.example.praisepoints.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,30 +37,55 @@ public class ChildService {
     public ChildResponse createChild(ChildRequest request) {
         User currentUser = getCurrentUser();
         
+        // username 중복 체크
+        if (request.getUsername() != null && !request.getUsername().trim().isEmpty()) {
+            String trimmedUsername = request.getUsername().trim();
+            if (childRepository.existsByUsername(trimmedUsername)) {
+                throw new DuplicateUsernameException("이미 사용 중인 아이 로그인 아이디입니다.");
+            }
+        }
+        
         Child child = new Child();
         child.setUser(currentUser);
         child.setName(request.getName());
         child.setBirthDate(request.getBirthDate());
         child.setProfileImage(request.getProfileImage());
-        child.setUsername(request.getUsername());
+        child.setUsername(request.getUsername() != null ? request.getUsername().trim() : null);
         child.setAuthKey(request.getAuthKey());
         child.setTotalPoints(0);
         
-        Child savedChild = childRepository.save(child);
-        return convertToResponse(savedChild);
+        try {
+            Child savedChild = childRepository.save(child);
+            return convertToResponse(savedChild);
+        } catch (DataIntegrityViolationException e) {
+            throw new DuplicateUsernameException("이미 사용 중인 아이 로그인 아이디입니다.");
+        }
     }
     
     public ChildResponse updateChild(Long childId, ChildRequest request) {
         Child child = getChildByIdAndCurrentUser(childId);
         
+        // username 중복 체크 (현재 아이의 username과 다른 경우에만)
+        if (request.getUsername() != null && !request.getUsername().trim().isEmpty()) {
+            String trimmedUsername = request.getUsername().trim();
+            if (!trimmedUsername.equals(child.getUsername()) && 
+                childRepository.existsByUsername(trimmedUsername)) {
+                throw new DuplicateUsernameException("이미 사용 중인 아이 로그인 아이디입니다.");
+            }
+        }
+        
         child.setName(request.getName());
         child.setBirthDate(request.getBirthDate());
         child.setProfileImage(request.getProfileImage());
-        child.setUsername(request.getUsername());
+        child.setUsername(request.getUsername() != null ? request.getUsername().trim() : null);
         child.setAuthKey(request.getAuthKey());
         
-        Child savedChild = childRepository.save(child);
-        return convertToResponse(savedChild);
+        try {
+            Child savedChild = childRepository.save(child);
+            return convertToResponse(savedChild);
+        } catch (DataIntegrityViolationException e) {
+            throw new DuplicateUsernameException("이미 사용 중인 아이 로그인 아이디입니다.");
+        }
     }
     
     public void deleteChild(Long childId) {

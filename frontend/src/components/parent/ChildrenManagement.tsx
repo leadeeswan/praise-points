@@ -85,9 +85,17 @@ const ChildrenManagement: React.FC = () => {
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    let processedValue = value || null;
+    
+    // 아이 로그인 아이디는 앞뒤 공백 제거
+    if (name === 'username' && value) {
+      processedValue = value.trim() || null;
+    }
+    
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value || null
+      [name]: processedValue
     });
   };
 
@@ -104,8 +112,26 @@ const ChildrenManagement: React.FC = () => {
       }
       await fetchChildren();
       handleCloseDialog();
-    } catch (error) {
-      setError(editingChild ? '아이 정보 수정에 실패했습니다.' : '아이 추가에 실패했습니다.');
+    } catch (error: any) {
+      // 백엔드에서 온 오류 메시지 사용
+      let errorMessage = '';
+      
+      if (error.response?.data?.message) {
+        errorMessage = error.response.data.message;
+      } else if (error.response?.data) {
+        errorMessage = typeof error.response.data === 'string' ? error.response.data : error.message;
+      } else {
+        errorMessage = error.message;
+      }
+      
+      // 중복 아이디 오류에 대한 특별한 처리
+      if (errorMessage && errorMessage.includes('이미 사용 중인 아이 로그인 아이디')) {
+        setError('이미 사용 중인 아이 로그인 아이디입니다. 다른 아이디를 사용해주세요.');
+      } else if (errorMessage) {
+        setError(errorMessage);
+      } else {
+        setError(editingChild ? '아이 정보 수정에 실패했습니다.' : '아이 추가에 실패했습니다.');
+      }
     } finally {
       setSubmitting(false);
     }

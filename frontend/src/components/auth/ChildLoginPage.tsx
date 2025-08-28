@@ -28,9 +28,17 @@ const ChildLoginPage: React.FC = () => {
   const navigate = useNavigate();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    let processedValue = value;
+    
+    // username 입력 시 앞뒤 공백 제거
+    if (name === 'username') {
+      processedValue = value.trim();
+    }
+    
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
+      [name]: processedValue
     });
   };
 
@@ -40,7 +48,12 @@ const ChildLoginPage: React.FC = () => {
     setError('');
 
     try {
-      const response = await loginChild(formData);
+      // username과 authKey 공백 제거 후 전송
+      const loginData = {
+        username: formData.username.trim(),
+        authKey: formData.authKey
+      };
+      const response = await loginChild(loginData);
       navigate(`/child-dashboard/${response.childId}`);
     } catch (error: any) {
       setError(error.response?.data?.message || '로그인에 실패했습니다.');
